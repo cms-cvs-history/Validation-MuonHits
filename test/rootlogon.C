@@ -1,4 +1,7 @@
 {
+gSystem->Load("libCintex.so");   // for CMSSW_0_8_0_pre4
+Cintex::Enable();                 // 
+
 gSystem->Load("libFWCoreFWLite");
 AutoLibraryLoader::enable();
 
