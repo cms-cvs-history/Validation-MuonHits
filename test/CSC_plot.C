@@ -11,9 +11,11 @@ mh_CSC_tof.clear();
 
 std::ostringstream ss;
 
+/// Name input data root file, output histogram root file and tree
+
   char * inprootfilename = "muonsimvalid.root";
   char * outrootfilename = "muonsimvalid_hist.root";
-  char * treename = "Events";        //The Title of Tree.
+  char * treename = "Events"; 
   
   hist_file=new TFile(outrootfilename,"RECREATE");
   hist_file->cd();
@@ -26,13 +28,13 @@ std::ostringstream ss;
   Int_t nevents = tree->GetEntries();
   std::cout << "Number of events = " << nevents << std::endl;
 
+/// Choose the object to work with
+
   TBranch *vpbrnch = tree->GetBranch("PMuonSimHit_vp_Hits_MuonHits.obj");
   assert(vpbrnch != 0);
 
   PMuonSimHit vp;
   vpbrnch->SetAddress(&vp);
-
-
 
 /// Fill the histograms
 
@@ -40,6 +42,8 @@ hist_file->cd();
 for (Int_t ev=1; ev<=nevents; ev++) {
    vpbrnch->GetEntry( ev );
 
+   /// Select the CSC subdetector
+ 
    std::vector<PMuonSimHit::CSC> CSC   = vp.getCSCHits();
 
    /// Number of all CSC hits
@@ -75,13 +79,15 @@ for (Int_t ev=1; ev<=nevents; ev++) {
    Float_t pow6=1000000.0;
    for (Int_t i = 0; i < CSC.size(); ++i) {
 
-   /// Select muon hits only for histograms below
+   /// Select CSC muon hits only for histograms below
 
      if(CSC[i]._particleType==13) {
 
+   /// Plot CSC chambers identified by endcap,station and ring only
+
        Int_t id=CSC[i]._cscId/1000;
 
-   /// Energy losses.
+   /// Energy losses in CSC
 
        Float_t eloss=CSC[i]._enloss*pow6;
        if (mh_CSC_enloss.count(id) == 0) {
@@ -94,7 +100,7 @@ for (Int_t ev=1; ev<=nevents; ev++) {
        }
        else   mh_CSC_enloss[id]->Fill(eloss,1.0);
 
-   /// Time of flight.
+   /// Time of flight for CSC
 
        Float_t tof=CSC[i]._tof;
        if (mh_CSC_tof.count(id) == 0) {
@@ -112,4 +118,3 @@ for (Int_t ev=1; ev<=nevents; ev++) {
 hist_file->Write();
 delete hist_file;
 }
-
