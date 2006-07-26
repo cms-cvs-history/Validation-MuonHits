@@ -4,6 +4,8 @@ std::map<int, TH1*> mh_nCSCMuonHits;
 std::map<int, TH1*> mh_CSC_enloss;
 std::map<int, TH1*> mh_CSC_tof;
 
+Int_t id, nevents;
+
 mh_nCSCHits.clear();
 mh_nCSCMuonHits.clear();
 mh_CSC_enloss.clear();
@@ -25,7 +27,7 @@ std::ostringstream ss;
   TTree * tree = dynamic_cast<TTree*>(myf->Get("Events"));
   assert(tree != 0);
 
-  Int_t nevents = tree->GetEntries();
+  nevents = tree->GetEntries();
   std::cout << "Number of events = " << nevents << std::endl;
 
 /// Choose the object to work with
@@ -49,17 +51,15 @@ for (Int_t ev=1; ev<=nevents; ev++) {
    /// Number of all CSC hits
 
    Int_t nCSCHits   = vp.getnCSCHits();
-   Int_t id=1;
+   id=1;
      if (mh_nCSCHits.count(id) == 0) {
         ss<<"Number of all CSC hits_"<<id;
         mh_nCSCHits[id]  = new TH1F(ss.str().c_str(),"", 50, 0.0, 100.0);
         mh_nCSCHits[id]->SetXTitle("Number of all hits in CSC");
         mh_nCSCHits[id]->SetYTitle("Entries");
         ss.str("");       
-        mh_nCSCHits[id]->Fill((float)nCSCHits,1.0);
      }
-     else   mh_nCSCHits[id]->Fill((float)nCSCHits,1.0);
-
+     mh_nCSCHits[id]->Fill((float)nCSCHits,1.0);
    /// Number of muon hits in CSC
 
    Int_t nCSCMuonHits=0;
@@ -72,9 +72,8 @@ for (Int_t ev=1; ev<=nevents; ev++) {
         mh_nCSCMuonHits[id]->SetXTitle("Number of muon hits in CSC");
         mh_nCSCMuonHits[id]->SetYTitle("Entries");
         ss.str("");       
-        mh_nCSCMuonHits[id]->Fill((float)nCSCMuonHits,1.0);
    }
-   else   mh_nCSCMuonHits[id]->Fill((float)nCSCMuonHits,1.0);     
+   mh_nCSCMuonHits[id]->Fill((float)nCSCMuonHits,1.0);     
 
    Float_t pow6=1000000.0;
    for (Int_t i = 0; i < CSC.size(); ++i) {
@@ -85,7 +84,7 @@ for (Int_t ev=1; ev<=nevents; ev++) {
 
    /// Plot CSC chambers identified by endcap,station and ring only
 
-       Int_t id=CSC[i]._cscId/1000;
+       id=CSC[i]._cscId/1000;
 
    /// Energy losses in CSC
 
@@ -96,9 +95,8 @@ for (Int_t ev=1; ev<=nevents; ev++) {
           mh_CSC_enloss[id]->SetXTitle("Energy Loss(keV)");
           mh_CSC_enloss[id]->SetYTitle("Entries");
           ss.str("");       
-          mh_CSC_enloss[id]->Fill(eloss,1.0);
        }
-       else   mh_CSC_enloss[id]->Fill(eloss,1.0);
+       mh_CSC_enloss[id]->Fill(eloss,1.0);
 
    /// Time of flight for CSC
 
@@ -109,9 +107,8 @@ for (Int_t ev=1; ev<=nevents; ev++) {
           mh_CSC_tof[id]->SetXTitle("Time of Flight (ns)");
           mh_CSC_tof[id]->SetYTitle("Entries");
           ss.str("");       
-          mh_CSC_tof[id]->Fill(tof,1.0);
        }
-       else   mh_CSC_tof[id]->Fill(tof,1.0);
+       mh_CSC_tof[id]->Fill(tof,1.0);
      }
    }
 }
