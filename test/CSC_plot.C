@@ -26,7 +26,7 @@ std::ostringstream ss;
   Int_t nevents = tree->GetEntries();
   std::cout << "Number of events = " << nevents << std::endl;
 
-  TBranch *vpbrnch = tree->GetBranch("PMuonSimHit_vp_Hits.obj");
+  TBranch *vpbrnch = tree->GetBranch("PMuonSimHit_vp_Hits_MuonHits.obj");
   assert(vpbrnch != 0);
 
   PMuonSimHit vp;
