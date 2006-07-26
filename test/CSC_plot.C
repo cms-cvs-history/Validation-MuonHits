@@ -4,14 +4,15 @@ std::map<int, TH1*> mh_nCSCMuonHits;
 std::map<int, TH1*> mh_CSC_enloss;
 std::map<int, TH1*> mh_CSC_tof;
 
-Int_t id, nevents;
+std::ostringstream ss;
+
+Int_t id, nevents=0;
+Float_t pow6=1000000.0;
 
 mh_nCSCHits.clear();
 mh_nCSCMuonHits.clear();
 mh_CSC_enloss.clear();
 mh_CSC_tof.clear();
-
-std::ostringstream ss;
 
 /// Name input data root file, output histogram root file and tree
 
@@ -52,14 +53,15 @@ for (Int_t ev=1; ev<=nevents; ev++) {
 
    Int_t nCSCHits   = vp.getnCSCHits();
    id=1;
-     if (mh_nCSCHits.count(id) == 0) {
-        ss<<"Number of all CSC hits_"<<id;
-        mh_nCSCHits[id]  = new TH1F(ss.str().c_str(),"", 50, 0.0, 100.0);
-        mh_nCSCHits[id]->SetXTitle("Number of all hits in CSC");
-        mh_nCSCHits[id]->SetYTitle("Entries");
-        ss.str("");       
-     }
-     mh_nCSCHits[id]->Fill((float)nCSCHits,1.0);
+   if (mh_nCSCHits.count(id) == 0) {
+      ss<<"Number of all CSC hits_"<<id;
+      mh_nCSCHits[id]  = new TH1F(ss.str().c_str(),"", 50, 0.0, 100.0);
+      mh_nCSCHits[id]->SetXTitle("Number of all hits in CSC");
+      mh_nCSCHits[id]->SetYTitle("Entries");
+      ss.str("");       
+   }
+   mh_nCSCHits[id]->Fill((float)nCSCHits,1.0);
+
    /// Number of muon hits in CSC
 
    Int_t nCSCMuonHits=0;
@@ -67,15 +69,14 @@ for (Int_t ev=1; ev<=nevents; ev++) {
      if(CSC[i]._particleType==13)  nCSCMuonHits++;   
    id=2;
    if (mh_nCSCMuonHits.count(id) == 0) {
-        ss<<"Number of muon CSC hits_"<<id;
-        mh_nCSCMuonHits[id]  = new TH1F(ss.str().c_str(),"", 50, 0.0, 50.0);
-        mh_nCSCMuonHits[id]->SetXTitle("Number of muon hits in CSC");
-        mh_nCSCMuonHits[id]->SetYTitle("Entries");
-        ss.str("");       
+      ss<<"Number of muon CSC hits_"<<id;
+      mh_nCSCMuonHits[id]  = new TH1F(ss.str().c_str(),"", 50, 0.0, 50.0);
+      mh_nCSCMuonHits[id]->SetXTitle("Number of muon hits in CSC");
+      mh_nCSCMuonHits[id]->SetYTitle("Entries");
+      ss.str("");       
    }
    mh_nCSCMuonHits[id]->Fill((float)nCSCMuonHits,1.0);     
 
-   Float_t pow6=1000000.0;
    for (Int_t i = 0; i < CSC.size(); ++i) {
 
    /// Select CSC muon hits only for histograms below
