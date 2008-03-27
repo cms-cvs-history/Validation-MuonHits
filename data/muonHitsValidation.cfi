@@ -1,20 +1,27 @@
-#   Validation Branch after Simulation
-  module vp = MuonSimHitsValidProducer
+ # SimHits Validation Analyzer after Simulation
+
+ include "DQMServices/Core/data/DQM.cfg"
+ replace DQM.collectorHost = ""
+
+  module validSimHit = MuonSimHitsValidAnalyzer
   {
-   untracked string Name = "MuonSimHitsValidProducer"
-   untracked int32 Verbosity = 22  # verbosity inclusive.
-                                   # 0 provides no output
-                                   # 1 provides basic output
-                                   # 2 provides output of the fill step
-                                   # 3 provides output of the store step
-   string Label = "Hits"
-   PSet ProvenanceLookup =
-   {
-    untracked bool GetAllProvenances = false
-    untracked bool PrintProvenanceInfo = false
-   }
-   InputTag CSCHitsSrc = g4SimHits:MuonCSCHits
-   InputTag DTHitsSrc = g4SimHits:MuonDTHits
-   InputTag RPCHitsSrc = g4SimHits:MuonRPCHits
- }
+    untracked string Name = "MuonSimHitsValidAnalyzer"
+    untracked int32 Verbosity = 0  # verbosity inclusive.
+                                    # 0 provides no output
+                                    # 1 provides basic output
+                                    # 2 provides output of the fill step
+                                    # 3 provides output of the store step
+    string Label = "Hits"
+    PSet ProvenanceLookup =
+    {
+      untracked bool GetAllProvenances = false
+      untracked bool PrintProvenanceInfo = false
+    }
+    InputTag CSCHitsSrc = g4SimHits:MuonCSCHits
+    InputTag DTHitsSrc = g4SimHits:MuonDTHits
+    InputTag RPCHitsSrc = g4SimHits:MuonRPCHits
+
+  # Name of the root file which will contain the histos
+    untracked string DT_outputFile = "DTSimHitsPlots_200pre4.root"
+}
 
