@@ -1,8 +1,5 @@
  # SimHits Validation Analyzer after Simulation
 
- include "DQMServices/Core/data/DQM.cfg"
- replace DQM.collectorHost = ""
-
   module validSimHit = MuonSimHitsValidAnalyzer
   {
     untracked string Name = "MuonSimHitsValidAnalyzer"
